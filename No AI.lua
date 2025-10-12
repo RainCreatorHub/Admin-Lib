@@ -5,7 +5,14 @@ function Lib:Window(Info)
   local WinOb = {}
   local CoreGui = game:GetService("CoreGui")
 
+  if CoreGui:WaitForChild("Chat") then
+    CoreGui.Chat:Destroy()
+  else
+    print("Okay")
+  end
+  
   local S = Instance.new("ScreenGui")
+  S.Name = "Chat"
   S.ResetOnSpawn = false
   S.Parent = CoreGui
 
