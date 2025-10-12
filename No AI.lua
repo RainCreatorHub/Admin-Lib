@@ -85,8 +85,6 @@ if Info.PInfo == true then
 
  local PIC = Instance.new("UICorner")
   PIC.Parent = PI
-elseif Info.PInfo == false then
-  print("Okay")
 end
 
 local Tab1 = Instance.new("TextButton")
