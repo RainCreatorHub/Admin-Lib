@@ -1,5 +1,4 @@
 local Library = {}
-local Texto = "Ola a todos!"
 local CoreGui = game:GetService("CoreGui")
 local UserInputService = game:GetService("UserInputService")
 
@@ -9,83 +8,85 @@ end
 
 function Library:Window(Info)
  local Info = Info or {}
-local S = Instance.new("ScreenGui")
-S.Name = "Test"
-S.ResetOnSpawn = false
-S.Parent = CoreGui
+ local S = Instance.new("ScreenGui")
+  S.Name = "Test"
+  S.ResetOnSpawn = false
+  S.Parent = CoreGui
 
-local Mb2 = Instance.new("TextButton")
-Mb2.Name = "MinButton2"
-Mb2.Size = UDim2.new(0, 30, 0, 30)
-Mb2.Position = UDim2.new(0, 150, 0, 15)
-Mb2.Text = " "
-Mb2.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-Mb2.Parent = S
+ local Mb2 = Instance.new("TextButton")
+  Mb2.Name = "MinButton2"
+  Mb2.Size = UDim2.new(0, 30, 0, 30)
+  Mb2.Position = UDim2.new(0, 150, 0, 15)
+  Mb2.Text = " "
+  Mb2.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+  Mb2.Parent = S
 
-local Mb2C = Instance.new("UICorner")
-Mb2C.Parent = Mb2
+ local Mb2C = Instance.new("UICorner")
+  Mb2C.Parent = Mb2
 
-local Win = Instance.new("Frame")
-Win.Name = "Window"
-Win.Size = UDim2.new(0, 450, 0, 320)
-Win.Position = UDim2.new(0, 200, 0, 15)
-Win.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-Win.Parent = S
+ local Win = Instance.new("Frame")
+  Win.Name = "Window"
+  Win.Size = UDim2.new(0, 450, 0, 320)
+  Win.Position = UDim2.new(0, 200, 0, 15)
+  Win.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+  Win.Parent = S
 
-local WC = Instance.new("UICorner")
-WC.Parent = Win
+ local WC = Instance.new("UICorner")
+  WC.Parent = Win
 
-local Tbar = Instance.new("Frame")
-Tbar.Name = "Tbar"
-Tbar.Size = UDim2.new(1, 0, 0, 24)
-Tbar.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-Tbar.Parent = Win
+ local Tbar = Instance.new("Frame")
+  Tbar.Name = "Tbar"
+  Tbar.Size = UDim2.new(1, 0, 0, 24)
+  Tbar.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+  Tbar.Parent = Win
 
-local TbarC = Instance.new("UICorner")
-TbarC.Parent = Tbar
+ local TbarC = Instance.new("UICorner")
+  TbarC.Parent = Tbar
 
-local TL = Instance.new("TextLabel")
-TL.Name = "TL"
-TL.Size = UDim2.new(1, -60, 1, 0)
-TL.Position = UDim2.new(0, 10, 0, 0)
-TL.Text = Info.Title or "Window!"
-TL.BackgroundTransparency = 1
-TL.TextColor3 = Color3.new(1, 1, 1)
-TL.Font = Enum.Font.SourceSans
-TL.TextSize = 18
-TL.TextXAlignment = Enum.TextXAlignment.Left
-TL.Parent = Tbar
+ local TL = Instance.new("TextLabel")
+  TL.Name = "TL"
+  TL.Size = UDim2.new(1, -60, 1, 0)
+  TL.Position = UDim2.new(0, 10, 0, 0)
+  TL.Text = Info.Title or "Window!"
+  TL.BackgroundTransparency = 1
+  TL.TextColor3 = Color3.new(1, 1, 1)
+  TL.Font = Enum.Font.SourceSans
+  TL.TextSize = 18
+  TL.TextXAlignment = Enum.TextXAlignment.Left
+  TL.Parent = Tbar
 
-local Cb = Instance.new("TextButton")
-Cb.Name = "CloseButton"
-Cb.Size = UDim2.new(0, 24, 0, 24)
-Cb.Position = UDim2.new(1, -26, 0, 0)
-Cb.Text = "X"
-Cb.TextColor3 = Color3.new(1, 0.3, 0.3)
-Cb.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-Cb.Parent = Tbar
-Cb.MouseButton1Click:Connect(function()
-    S:Destroy()
-end)
+ local Cb = Instance.new("TextButton")
+  Cb.Name = "CloseButton"
+  Cb.Size = UDim2.new(0, 24, 0, 24)
+  Cb.Position = UDim2.new(1, -26, 0, 0)
+  Cb.Text = "X"
+  Cb.TextColor3 = Color3.new(1, 0.3, 0.3)
+  Cb.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+  Cb.Parent = Tbar
+  Cb.MouseButton1Click:Connect(function()
+      S:Destroy()
+  end)
 
-local CbC = Instance.new("UICorner")
-CbC.Parent = Cb
+ local CbC = Instance.new("UICorner")
+  CbC.Parent = Cb
 
-local TA = Instance.new("Frame")
+ local TA = Instance.new("Frame")
   TA.Name = "TabArea"
   TA.Size = UDim2.new(0, 100, 0, 250)
   TA.Position = UDim2.new(0, 1, 0, 26)
   TA.Parent = Win
 
 if Info.PInfo == true then
-local PI = Instance.new("Frame")
+ local PI = Instance.new("Frame")
   PI.Name = "Player Info"
   PI.Size = UDim2.new(0, 100, 0, 40)
   PI.Position = UDim2.new(0, 1, 0, 280)
   PI.Parent = Win
 
-local PIC = Instance.new("UICorner")
+ local PIC = Instance.new("UICorner")
   PIC.Parent = PI
+elseif Info.PInfo == false or Not Info.PInfo then
+  print("Okay")
 end
 
 local Tab1 = Instance.new("TextButton")
