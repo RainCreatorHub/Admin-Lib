@@ -22,6 +22,7 @@ function Lib:Window(Info)
   Win.Parent = S
 
   local Tbar = Instance.new("Frame")
+  Tbar.Size = UDim2.new(0, 199, 0, 2)
   Tbar.Parent = Win
 
   function WinOb:Label(Info)
