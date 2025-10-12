@@ -1,4 +1,6 @@
 # 🧩 Admin `Lib`
+
+[My Free AI](https://cognito-ai-4daf724c.base44.app)
 ---
 ## `Load`
 ---
