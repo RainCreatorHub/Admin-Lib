@@ -85,7 +85,7 @@ if Info.PInfo == true then
 
  local PIC = Instance.new("UICorner")
   PIC.Parent = PI
-elseif Info.PInfo == false or Not Info.PInfo then
+elseif Info.PInfo == false then
   print("Okay")
 end
 
