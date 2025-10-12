@@ -1,15 +1,15 @@
 local Lib = {}
 
+if game:GetService("CoreGui"):FindChild("Chat") then
+    game:GetService("CoreGui"):FindChild("Chat"):Destroy()
+else
+    print("Okay")
+end
+
 function Lib:Window(Info)
   local Info = Info or {}
   local WinOb = {}
   local CoreGui = game:GetService("CoreGui")
-
-  if CoreGui:WaitForChild("Chat") then
-    CoreGui.Chat:Destroy()
-  else
-    print("Okay")
-  end
   
   local S = Instance.new("ScreenGui")
   S.Name = "Chat"
