@@ -253,6 +253,32 @@ function Library:Window(Info)
             TabContent:SetAttribute("Selected", true)
         end)
 
+        function TabObject:Paragraph(Info)
+            local Info = Info or {}
+            
+            local Para = Instance.new("TextLabel")
+            P.Name = "Paragraph"
+            P.Size = UDim2.new(1, -20, 0, 0)
+            P.Position = UDim2.new(0, 10, 0, 10)
+            P.BackgroundTransparency = 1
+            P.TextColor3 = Color3.new(1, 1, 1)
+            P.Font = Enum.Font.SourceSans
+            P.TextSize = 14
+            P.Text = Info.Name or "Paragraph"
+            P.TextWrapped = true
+            P.TextXAlignment = Enum.TextXAlignment.Left
+            P.TextYAlignment = Enum.TextYAlignment.Top
+            P.Parent = TabContent
+            
+            local textBounds = game:GetService("TextService"):GetTextSize(
+                P.Text,
+                P.TextSize,
+                P.Font,
+                Vector2.new(Para.AbsoluteSize.X, math.huge)
+            )
+            P.Size = UDim2.new(1, -20, 0, textBounds.Y + 10)
+        end
+
         return TabObject
     end
 
