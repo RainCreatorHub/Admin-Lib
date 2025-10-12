@@ -12,6 +12,7 @@ function Lib:Window(Info)
   local Win = Instance.new("Frame")
     Win.Size = UDim2.new(0, Info.Size[1] or 470, 0, Info.Size[2] or 340)
     Win.Position = UDim2.new(0, 200, 0, 15)
+    Win.Parent = S
 
   function WinOb:Label(Info)
   
