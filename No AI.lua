@@ -21,6 +21,9 @@ function Lib:Window(Info)
   Win.Position = UDim2.new(0.5, -235, 0.5, -170)
   Win.Parent = S
 
+  local Tbar = Instance.new("Frame")
+  Tbar.Parent = Win
+
   function WinOb:Label(Info)
 
   end
