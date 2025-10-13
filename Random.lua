@@ -23,20 +23,27 @@ function Lib:Window(Info)
     BWin.Parent = Win
 
     local Tbar = Instance.new("Frame")
-    Tbar.Size = UDim2.new(0, 450, 0, 25)
+    Tbar.Size = UDim2.new(0, 450, 0, 30)
     Tbar.Parent = Win
 
     local TbarD = Instance.new("Frame")
-    TbarD.Size = UDim2.new(0, 450, 0, 0)
-    TbarD.Position = UDim2.new(0, 0, 0, 25)
+    TbarD.Size = UDim2.new(0, 450, 0, 0.01)
+    TbarD.Position = UDim2.new(0, 0, 0, 30)
     TbarD.Parent = Win
 
     local TC = Instance.new("UICorner")
     TC.Parent = Tbar
+
+    local Title = Instance.new("TextLabel")
+    Title.Size = UDim2.new(0, 15, 0, 15)
+    Title.Position = UDim2.new(0, 3, 0, 4)
+    Title.Text = Info.Title or "Window Title"
+    Title.Parent = Tbar
 end
 
 function Lib:Demo()
   local Window = Lib:Window({
+    Title = "Hello",
     Size = {
      450,
      320
