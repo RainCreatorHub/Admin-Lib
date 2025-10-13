@@ -55,4 +55,58 @@ Lib.Section = LoadModule("Elements.Section", "src/Elements/Section.lua")
 -- Carregar Window (precisa de todos os outros módulos)
 Lib.Window = LoadModule("Components.Window", "src/Components/Window.lua")
 
+-- Função de demonstração
+function Lib:Demo()
+	local MyWindow = Lib.Window:Create({
+		Title = "AdL Library",
+		SubTitle = "v1.7 - Modular",
+		Size = { 440, 320 }
+	})
+	
+	local MainTab = MyWindow:Tab({ Title = "Main" })
+	local SettingsTab = MyWindow:Tab({ Title = "Settings" })
+	
+	Lib.Button:Create({
+		Title = "Test Button",
+		Parent = MainTab,
+		Callback = function()
+			Lib.Notify:Create({
+				Title = "Success",
+				Description = "Button clicked!",
+				Duration = 3
+			})
+		end
+	})
+	
+	Lib.Toggle:Create({
+		Title = "Test Toggle",
+		Parent = MainTab,
+		Default = false,
+		Callback = function(value)
+			print("Toggle:", value)
+		end
+	})
+	
+	Lib.Slider:Create({
+		Title = "Test Slider",
+		Parent = SettingsTab,
+		Min = 0,
+		Max = 100,
+		Default = 50,
+		Callback = function(value)
+			print("Slider:", value)
+		end
+	})
+	
+	Lib.Dropdown:Create({
+		Title = "Test Dropdown",
+		Parent = SettingsTab,
+		Options = { "Option 1", "Option 2", "Option 3" },
+		Default = "Option 1",
+		Callback = function(value)
+			print("Selected:", value)
+		end
+	})
+end
+
 return Lib
