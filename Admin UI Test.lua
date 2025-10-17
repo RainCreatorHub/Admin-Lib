@@ -1,7 +1,7 @@
 local Lib = {}
 
 function Lib:Window(Info)
-    local Info = Info or {}
+    Info = Info or {}
     local Title = Info.Title or "Window"
     local Size = Info.Size or UDim2.new(0, 440, 0, 330)
     
@@ -19,9 +19,7 @@ function Lib:Window(Info)
     Window.BorderSizePixel = 0
     Window.Parent = ScreenGui
     
-    local WindowCorner = Instance.new("UICorner")
-    WindowCorner.CornerRadius = UDim.new(0, 8)
-    WindowCorner.Parent = Window
+    Instance.new("UICorner", Window).CornerRadius = UDim.new(0, 8)
     
     local TitleBar = Instance.new("Frame")
     TitleBar.Name = "TitleBar"
@@ -30,21 +28,17 @@ function Lib:Window(Info)
     TitleBar.BorderSizePixel = 0
     TitleBar.Parent = Window
     
-    local TitleBarCorner = Instance.new("UICorner")
-    TitleBarCorner.CornerRadius = UDim.new(0, 8)
-    TitleBarCorner.Parent = TitleBar
+    Instance.new("UICorner", TitleBar).CornerRadius = UDim.new(0, 8)
     
-    local TitleBarExtension = Instance.new("Frame")
-    TitleBarExtension.Size = UDim2.new(1, 0, 0, 8)
-    TitleBarExtension.Position = UDim2.new(0, 0, 1, -8)
-    TitleBarExtension.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-    TitleBarExtension.BorderSizePixel = 0
-    TitleBarExtension.Parent = TitleBar
+    local Ext = Instance.new("Frame")
+    Ext.Size = UDim2.new(1, 0, 0, 8)
+    Ext.Position = UDim2.new(0, 0, 1, -8)
+    Ext.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    Ext.BorderSizePixel = 0
+    Ext.Parent = TitleBar
     
-    local Logo
     if Info.Logo then
-        Logo = Instance.new("ImageLabel")
-        Logo.Name = "Logo"
+        local Logo = Instance.new("ImageLabel")
         Logo.Size = UDim2.new(0, 20, 0, 20)
         Logo.Position = UDim2.new(0, 8, 0.5, -10)
         Logo.BackgroundTransparency = 1
@@ -53,7 +47,6 @@ function Lib:Window(Info)
     end
     
     local TitleLabel = Instance.new("TextLabel")
-    TitleLabel.Name = "Title"
     TitleLabel.Size = UDim2.new(1, -80, 1, 0)
     TitleLabel.Position = UDim2.new(0, Info.Logo and 35 or 10, 0, 0)
     TitleLabel.BackgroundTransparency = 1
@@ -64,70 +57,49 @@ function Lib:Window(Info)
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     TitleLabel.Parent = TitleBar
     
-    local MinimizeButton = Instance.new("TextButton")
-    MinimizeButton.Name = "MinimizeButton"
-    MinimizeButton.Size = UDim2.new(0, 25, 0, 25)
-    MinimizeButton.Position = UDim2.new(1, -55, 0.5, -12.5)
-    MinimizeButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    MinimizeButton.BorderSizePixel = 0
-    MinimizeButton.Text = "–"
-    MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    MinimizeButton.TextSize = 16
-    MinimizeButton.Font = Enum.Font.GothamBold
-    MinimizeButton.Parent = TitleBar
+    local MinBtn = Instance.new("TextButton")
+    MinBtn.Size = UDim2.new(0, 25, 0, 25)
+    MinBtn.Position = UDim2.new(1, -55, 0.5, -12.5)
+    MinBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    MinBtn.BorderSizePixel = 0
+    MinBtn.Text = "–"
+    MinBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    MinBtn.TextSize = 16
+    MinBtn.Font = Enum.Font.GothamBold
+    MinBtn.Parent = TitleBar
+    Instance.new("UICorner", MinBtn).CornerRadius = UDim.new(0, 4)
     
-    local MinimizeCorner = Instance.new("UICorner")
-    MinimizeCorner.CornerRadius = UDim.new(0, 4)
-    MinimizeCorner.Parent = MinimizeButton
-    
-    local CloseButton = Instance.new("TextButton")
-    CloseButton.Name = "CloseButton"
-    CloseButton.Size = UDim2.new(0, 25, 0, 25)
-    CloseButton.Position = UDim2.new(1, -25, 0.5, -12.5)
-    CloseButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
-    CloseButton.BorderSizePixel = 0
-    CloseButton.Text = "X"
-    CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    CloseButton.TextSize = 14
-    CloseButton.Font = Enum.Font.GothamBold
-    CloseButton.Parent = TitleBar
-    
-    local CloseCorner = Instance.new("UICorner")
-    CloseCorner.CornerRadius = UDim.new(0, 4)
-    CloseCorner.Parent = CloseButton
+    local CloseBtn = Instance.new("TextButton")
+    CloseBtn.Size = UDim2.new(0, 25, 0, 25)
+    CloseBtn.Position = UDim2.new(1, -25, 0.5, -12.5)
+    CloseBtn.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+    CloseBtn.BorderSizePixel = 0
+    CloseBtn.Text = "X"
+    CloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    CloseBtn.TextSize = 14
+    CloseBtn.Font = Enum.Font.GothamBold
+    CloseBtn.Parent = TitleBar
+    Instance.new("UICorner", CloseBtn).CornerRadius = UDim.new(0, 4)
     
     local minimized = false
-    local originalSize = Size
     
-    CloseButton.MouseButton1Click:Connect(function()
+    CloseBtn.MouseButton1Click:Connect(function()
         ScreenGui:Destroy()
     end)
     
-    MinimizeButton.MouseButton1Click:Connect(function()
+    MinBtn.MouseButton1Click:Connect(function()
         minimized = not minimized
-        if minimized then
-            Window:TweenSize(
-                UDim2.new(originalSize.X.Scale, originalSize.X.Offset, 0, 35),
-                Enum.EasingDirection.Out,
-                Enum.EasingStyle.Quad,
-                0.3,
-                true
-            )
-            MinimizeButton.Text = "+"
-        else
-            Window:TweenSize(
-                originalSize,
-                Enum.EasingDirection.Out,
-                Enum.EasingStyle.Quad,
-                0.3,
-                true
-            )
-            MinimizeButton.Text = "–"
-        end
+        Window:TweenSize(
+            minimized and UDim2.new(Size.X.Scale, Size.X.Offset, 0, 35) or Size,
+            Enum.EasingDirection.Out,
+            Enum.EasingStyle.Quad,
+            0.3,
+            true
+        )
+        MinBtn.Text = minimized and "+" or "–"
     end)
     
-    local dragging = false
-    local dragInput, dragStart, startPos
+    local dragging, dragInput, dragStart, startPos
     
     local function update(input)
         local delta = input.Position - dragStart
@@ -166,331 +138,293 @@ function Lib:Window(Info)
     end)
     
     if Info.Key and Info.KeyS then
-        local KeySystem = Instance.new("Frame")
-        KeySystem.Name = "KeySystem"
-        KeySystem.Size = UDim2.new(0, 350, 0, 250)
-        KeySystem.Position = UDim2.new(0.5, -175, 0.5, -125)
-        KeySystem.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-        KeySystem.BorderSizePixel = 0
-        KeySystem.Parent = ScreenGui
-        KeySystem.ZIndex = 10
+        local KeyS = Instance.new("Frame")
+        KeyS.Size = UDim2.new(0, 350, 0, 250)
+        KeyS.Position = UDim2.new(0.5, -175, 0.5, -125)
+        KeyS.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        KeyS.BorderSizePixel = 0
+        KeyS.ZIndex = 10
+        KeyS.Parent = ScreenGui
+        Instance.new("UICorner", KeyS).CornerRadius = UDim.new(0, 8)
         
-        local KeyCorner = Instance.new("UICorner")
-        KeyCorner.CornerRadius = UDim.new(0, 8)
-        KeyCorner.Parent = KeySystem
-        
-        local KeyLogo
         if Info.KeyS.Logo then
-            KeyLogo = Instance.new("ImageLabel")
-            KeyLogo.Size = UDim2.new(0, 60, 0, 60)
-            KeyLogo.Position = UDim2.new(0.5, -30, 0, 20)
-            KeyLogo.BackgroundTransparency = 1
-            KeyLogo.Image = "rbxassetid://" .. tostring(Info.KeyS.Logo)
-            KeyLogo.ZIndex = 11
-            KeyLogo.Parent = KeySystem
+            local KLogo = Instance.new("ImageLabel")
+            KLogo.Size = UDim2.new(0, 60, 0, 60)
+            KLogo.Position = UDim2.new(0.5, -30, 0, 20)
+            KLogo.BackgroundTransparency = 1
+            KLogo.Image = "rbxassetid://" .. tostring(Info.KeyS.Logo)
+            KLogo.ZIndex = 11
+            KLogo.Parent = KeyS
         end
         
-        local KeyTitle = Instance.new("TextLabel")
-        KeyTitle.Size = UDim2.new(1, -40, 0, 25)
-        KeyTitle.Position = UDim2.new(0, 20, 0, KeyLogo and 90 or 20)
-        KeyTitle.BackgroundTransparency = 1
-        KeyTitle.Text = Info.KeyS.Title or "Key System"
-        KeyTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-        KeyTitle.TextSize = 18
-        KeyTitle.Font = Enum.Font.GothamBold
-        KeyTitle.ZIndex = 11
-        KeyTitle.Parent = KeySystem
+        local yPos = Info.KeyS.Logo and 90 or 20
         
-        local KeySubTitle = Instance.new("TextLabel")
-        KeySubTitle.Size = UDim2.new(1, -40, 0, 20)
-        KeySubTitle.Position = UDim2.new(0, 20, 0, KeyTitle.Position.Y.Offset + 25)
-        KeySubTitle.BackgroundTransparency = 1
-        KeySubTitle.Text = Info.KeyS.SubTitle or ""
-        KeySubTitle.TextColor3 = Color3.fromRGB(200, 200, 200)
-        KeySubTitle.TextSize = 14
-        KeySubTitle.Font = Enum.Font.Gotham
-        KeySubTitle.ZIndex = 11
-        KeySubTitle.Parent = KeySystem
+        local KTitle = Instance.new("TextLabel")
+        KTitle.Size = UDim2.new(1, -40, 0, 25)
+        KTitle.Position = UDim2.new(0, 20, 0, yPos)
+        KTitle.BackgroundTransparency = 1
+        KTitle.Text = Info.KeyS.Title or "Key System"
+        KTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+        KTitle.TextSize = 18
+        KTitle.Font = Enum.Font.GothamBold
+        KTitle.ZIndex = 11
+        KTitle.Parent = KeyS
         
-        local KeyDesc = Instance.new("TextLabel")
-        KeyDesc.Size = UDim2.new(1, -40, 0, 20)
-        KeyDesc.Position = UDim2.new(0, 20, 0, KeySubTitle.Position.Y.Offset + 20)
-        KeyDesc.BackgroundTransparency = 1
-        KeyDesc.Text = Info.KeyS.Desc or ""
-        KeyDesc.TextColor3 = Color3.fromRGB(150, 150, 150)
-        KeyDesc.TextSize = 12
-        KeyDesc.Font = Enum.Font.Gotham
-        KeyDesc.ZIndex = 11
-        KeyDesc.Parent = KeySystem
+        local KSub = Instance.new("TextLabel")
+        KSub.Size = UDim2.new(1, -40, 0, 20)
+        KSub.Position = UDim2.new(0, 20, 0, yPos + 25)
+        KSub.BackgroundTransparency = 1
+        KSub.Text = Info.KeyS.SubTitle or ""
+        KSub.TextColor3 = Color3.fromRGB(200, 200, 200)
+        KSub.TextSize = 14
+        KSub.Font = Enum.Font.Gotham
+        KSub.ZIndex = 11
+        KSub.Parent = KeyS
         
-        local KeyInput = Instance.new("TextBox")
-        KeyInput.Size = UDim2.new(1, -40, 0, 35)
-        KeyInput.Position = UDim2.new(0, 20, 0, KeyDesc.Position.Y.Offset + 30)
-        KeyInput.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-        KeyInput.BorderSizePixel = 0
-        KeyInput.Text = ""
-        KeyInput.PlaceholderText = "Enter Key..."
-        KeyInput.TextColor3 = Color3.fromRGB(255, 255, 255)
-        KeyInput.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
-        KeyInput.TextSize = 14
-        KeyInput.Font = Enum.Font.Gotham
-        KeyInput.ZIndex = 11
-        KeyInput.Parent = KeySystem
+        local KDesc = Instance.new("TextLabel")
+        KDesc.Size = UDim2.new(1, -40, 0, 20)
+        KDesc.Position = UDim2.new(0, 20, 0, yPos + 45)
+        KDesc.BackgroundTransparency = 1
+        KDesc.Text = Info.KeyS.Desc or ""
+        KDesc.TextColor3 = Color3.fromRGB(150, 150, 150)
+        KDesc.TextSize = 12
+        KDesc.Font = Enum.Font.Gotham
+        KDesc.ZIndex = 11
+        KDesc.Parent = KeyS
         
-        local KeyInputCorner = Instance.new("UICorner")
-        KeyInputCorner.CornerRadius = UDim.new(0, 6)
-        KeyInputCorner.Parent = KeyInput
+        local KInput = Instance.new("TextBox")
+        KInput.Size = UDim2.new(1, -40, 0, 35)
+        KInput.Position = UDim2.new(0, 20, 0, yPos + 75)
+        KInput.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+        KInput.BorderSizePixel = 0
+        KInput.Text = ""
+        KInput.PlaceholderText = "Enter Key..."
+        KInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+        KInput.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
+        KInput.TextSize = 14
+        KInput.Font = Enum.Font.Gotham
+        KInput.ZIndex = 11
+        KInput.Parent = KeyS
+        Instance.new("UICorner", KInput).CornerRadius = UDim.new(0, 6)
         
-        local SubmitButton = Instance.new("TextButton")
-        SubmitButton.Size = UDim2.new(0, 140, 0, 35)
-        SubmitButton.Position = UDim2.new(0, 20, 1, -45)
-        SubmitButton.BackgroundColor3 = Color3.fromRGB(50, 150, 250)
-        SubmitButton.BorderSizePixel = 0
-        SubmitButton.Text = "Submit"
-        SubmitButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-        SubmitButton.TextSize = 14
-        SubmitButton.Font = Enum.Font.GothamBold
-        SubmitButton.ZIndex = 11
-        SubmitButton.Parent = KeySystem
+        local SubBtn = Instance.new("TextButton")
+        SubBtn.Size = UDim2.new(0, 140, 0, 35)
+        SubBtn.Position = UDim2.new(0, 20, 1, -45)
+        SubBtn.BackgroundColor3 = Color3.fromRGB(50, 150, 250)
+        SubBtn.BorderSizePixel = 0
+        SubBtn.Text = "Submit"
+        SubBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        SubBtn.TextSize = 14
+        SubBtn.Font = Enum.Font.GothamBold
+        SubBtn.ZIndex = 11
+        SubBtn.Parent = KeyS
+        Instance.new("UICorner", SubBtn).CornerRadius = UDim.new(0, 6)
         
-        local SubmitCorner = Instance.new("UICorner")
-        SubmitCorner.CornerRadius = UDim.new(0, 6)
-        SubmitCorner.Parent = SubmitButton
-        
-        local GetKeyButton = Instance.new("TextButton")
-        GetKeyButton.Size = UDim2.new(0, 140, 0, 35)
-        GetKeyButton.Position = UDim2.new(1, -160, 1, -45)
-        GetKeyButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-        GetKeyButton.BorderSizePixel = 0
-        GetKeyButton.Text = "Get Key"
-        GetKeyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-        GetKeyButton.TextSize = 14
-        GetKeyButton.Font = Enum.Font.GothamBold
-        GetKeyButton.ZIndex = 11
-        GetKeyButton.Parent = KeySystem
-        
-        local GetKeyCorner = Instance.new("UICorner")
-        GetKeyCorner.CornerRadius = UDim.new(0, 6)
-        GetKeyCorner.Parent = GetKeyButton
+        local GetBtn = Instance.new("TextButton")
+        GetBtn.Size = UDim2.new(0, 140, 0, 35)
+        GetBtn.Position = UDim2.new(1, -160, 1, -45)
+        GetBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+        GetBtn.BorderSizePixel = 0
+        GetBtn.Text = "Get Key"
+        GetBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        GetBtn.TextSize = 14
+        GetBtn.Font = Enum.Font.GothamBold
+        GetBtn.ZIndex = 11
+        GetBtn.Parent = KeyS
+        Instance.new("UICorner", GetBtn).CornerRadius = UDim.new(0, 6)
         
         Window.Visible = false
         
-        SubmitButton.MouseButton1Click:Connect(function()
-            local enteredKey = KeyInput.Text
-            for _, validKey in pairs(Info.KeyS.Key) do
-                if enteredKey == validKey then
-                    KeySystem:Destroy()
+        SubBtn.MouseButton1Click:Connect(function()
+            for _, k in pairs(Info.KeyS.Key) do
+                if KInput.Text == k then
+                    KeyS:Destroy()
                     Window.Visible = true
                     return
                 end
             end
-            KeyInput.Text = ""
-            KeyInput.PlaceholderText = "Invalid Key!"
+            KInput.Text = ""
+            KInput.PlaceholderText = "Invalid Key!"
             wait(1)
-            KeyInput.PlaceholderText = "Enter Key..."
+            KInput.PlaceholderText = "Enter Key..."
         end)
         
-        GetKeyButton.MouseButton1Click:Connect(function()
+        GetBtn.MouseButton1Click:Connect(function()
             if Info.KeyS.Url then
-                setclipboard(Info.KeyS.Url)
-                GetKeyButton.Text = "Copied!"
+                pcall(function() setclipboard(Info.KeyS.Url) end)
+                GetBtn.Text = "Copied!"
                 wait(1)
-                GetKeyButton.Text = "Get Key"
+                GetBtn.Text = "Get Key"
             end
         end)
     end
     
-    local WindowFunctions = {}
+    local WF = {}
     
-    function WindowFunctions:Notify(NotifyInfo)
-        local NotifyInfo = NotifyInfo or {}
-        local NotifyTitle = NotifyInfo.Title or "Notification"
-        local NotifyDesc = NotifyInfo.Desc or ""
-        local NotifyLogo = NotifyInfo.Logo
-        local Options = NotifyInfo.Options or {}
+    function WF:Dialog(DInfo)
+        DInfo = DInfo or {}
+        local opts = DInfo.Options or {}
         
-        local NotifyFrame = Instance.new("Frame")
-        NotifyFrame.Name = "Notify"
-        NotifyFrame.Size = UDim2.new(0, 320, 0, 200 + (#Options * 40))
-        NotifyFrame.Position = UDim2.new(0.5, -160, 0.5, -(100 + (#Options * 20)))
-        NotifyFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-        NotifyFrame.BorderSizePixel = 0
-        NotifyFrame.Visible = true
-        NotifyFrame.ZIndex = 10
-        NotifyFrame.Parent = ScreenGui
+        local D = Instance.new("Frame")
+        D.Size = UDim2.new(0, 320, 0, 200 + (#opts * 40))
+        D.Position = UDim2.new(0.5, -160, 0.5, -(100 + (#opts * 20)))
+        D.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+        D.BorderSizePixel = 0
+        D.Visible = false
+        D.ZIndex = 10
+        D.Parent = ScreenGui
+        Instance.new("UICorner", D).CornerRadius = UDim.new(0, 8)
         
-        local NotifyCorner = Instance.new("UICorner")
-        NotifyCorner.CornerRadius = UDim.new(0, 8)
-        NotifyCorner.Parent = NotifyFrame
+        local yPos = 20
         
-        local NotifyLogoImage
-        if NotifyLogo then
-            NotifyLogoImage = Instance.new("ImageLabel")
-            NotifyLogoImage.Size = UDim2.new(0, 50, 0, 50)
-            NotifyLogoImage.Position = UDim2.new(0.5, -25, 0, 20)
-            NotifyLogoImage.BackgroundTransparency = 1
-            NotifyLogoImage.Image = "rbxassetid://" .. tostring(NotifyLogo)
-            NotifyLogoImage.ZIndex = 11
-            NotifyLogoImage.Parent = NotifyFrame
+        if DInfo.Logo then
+            local DLogo = Instance.new("ImageLabel")
+            DLogo.Size = UDim2.new(0, 50, 0, 50)
+            DLogo.Position = UDim2.new(0.5, -25, 0, 20)
+            DLogo.BackgroundTransparency = 1
+            DLogo.Image = "rbxassetid://" .. tostring(DInfo.Logo)
+            DLogo.ZIndex = 11
+            DLogo.Parent = D
+            yPos = 80
         end
         
-        local NotifyTitleLabel = Instance.new("TextLabel")
-        NotifyTitleLabel.Size = UDim2.new(1, -40, 0, 25)
-        NotifyTitleLabel.Position = UDim2.new(0, 20, 0, NotifyLogoImage and 80 or 20)
-        NotifyTitleLabel.BackgroundTransparency = 1
-        NotifyTitleLabel.Text = NotifyTitle
-        NotifyTitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-        NotifyTitleLabel.TextSize = 18
-        NotifyTitleLabel.Font = Enum.Font.GothamBold
-        NotifyTitleLabel.ZIndex = 11
-        NotifyTitleLabel.Parent = NotifyFrame
+        local DTitle = Instance.new("TextLabel")
+        DTitle.Size = UDim2.new(1, -40, 0, 25)
+        DTitle.Position = UDim2.new(0, 20, 0, yPos)
+        DTitle.BackgroundTransparency = 1
+        DTitle.Text = DInfo.Title or "Dialog"
+        DTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+        DTitle.TextSize = 18
+        DTitle.Font = Enum.Font.GothamBold
+        DTitle.ZIndex = 11
+        DTitle.Parent = D
         
-        local NotifyDescLabel = Instance.new("TextLabel")
-        NotifyDescLabel.Size = UDim2.new(1, -40, 0, 40)
-        NotifyDescLabel.Position = UDim2.new(0, 20, 0, NotifyTitleLabel.Position.Y.Offset + 30)
-        NotifyDescLabel.BackgroundTransparency = 1
-        NotifyDescLabel.Text = NotifyDesc
-        NotifyDescLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-        NotifyDescLabel.TextSize = 14
-        NotifyDescLabel.Font = Enum.Font.Gotham
-        NotifyDescLabel.TextWrapped = true
-        NotifyDescLabel.ZIndex = 11
-        NotifyDescLabel.Parent = NotifyFrame
+        local DDesc = Instance.new("TextLabel")
+        DDesc.Size = UDim2.new(1, -40, 0, 40)
+        DDesc.Position = UDim2.new(0, 20, 0, yPos + 30)
+        DDesc.BackgroundTransparency = 1
+        DDesc.Text = DInfo.Desc or ""
+        DDesc.TextColor3 = Color3.fromRGB(200, 200, 200)
+        DDesc.TextSize = 14
+        DDesc.Font = Enum.Font.Gotham
+        DDesc.TextWrapped = true
+        DDesc.ZIndex = 11
+        DDesc.Parent = D
         
-        local yOffset = NotifyDescLabel.Position.Y.Offset + 50
+        yPos = yPos + 80
         
-        for i, option in ipairs(Options) do
-            local OptionButton = Instance.new("TextButton")
-            OptionButton.Size = UDim2.new(1, -40, 0, 35)
-            OptionButton.Position = UDim2.new(0, 20, 0, yOffset)
-            OptionButton.BackgroundColor3 = Color3.fromRGB(50, 150, 250)
-            OptionButton.BorderSizePixel = 0
-            OptionButton.Text = option.Title or "Option " .. i
-            OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-            OptionButton.TextSize = 14
-            OptionButton.Font = Enum.Font.GothamBold
-            OptionButton.ZIndex = 11
-            OptionButton.Parent = NotifyFrame
+        for i, opt in ipairs(opts) do
+            local OBtn = Instance.new("TextButton")
+            OBtn.Size = UDim2.new(1, -40, 0, 35)
+            OBtn.Position = UDim2.new(0, 20, 0, yPos)
+            OBtn.BackgroundColor3 = Color3.fromRGB(50, 150, 250)
+            OBtn.BorderSizePixel = 0
+            OBtn.Text = opt.Title or "Option " .. i
+            OBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+            OBtn.TextSize = 14
+            OBtn.Font = Enum.Font.GothamBold
+            OBtn.ZIndex = 11
+            OBtn.Parent = D
+            Instance.new("UICorner", OBtn).CornerRadius = UDim.new(0, 6)
             
-            local OptionCorner = Instance.new("UICorner")
-            OptionCorner.CornerRadius = UDim.new(0, 6)
-            OptionCorner.Parent = OptionButton
-            
-            OptionButton.MouseButton1Click:Connect(function()
-                if option.Callback then
-                    option.Callback()
+            OBtn.MouseButton1Click:Connect(function()
+                if opt.Callback then
+                    pcall(opt.Callback)
                 end
-                NotifyFrame:Destroy()
+                D.Visible = false
             end)
             
-            yOffset = yOffset + 45
-        end
-    end
-        local DialogInfo = DialogInfo or {}
-        local DialogTitle = DialogInfo.Title or "Dialog"
-        local DialogDesc = DialogInfo.Desc or ""
-        local DialogLogo = DialogInfo.Logo
-        local Options = DialogInfo.Options or {}
-        
-        local DialogFrame = Instance.new("Frame")
-        DialogFrame.Name = "Dialog"
-        DialogFrame.Size = UDim2.new(0, 320, 0, 200 + (#Options * 40))
-        DialogFrame.Position = UDim2.new(0.5, -160, 0.5, -(100 + (#Options * 20)))
-        DialogFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-        DialogFrame.BorderSizePixel = 0
-        DialogFrame.Visible = false
-        DialogFrame.ZIndex = 10
-        DialogFrame.Parent = ScreenGui
-        
-        local DialogCorner = Instance.new("UICorner")
-        DialogCorner.CornerRadius = UDim.new(0, 8)
-        DialogCorner.Parent = DialogFrame
-        
-        local DialogLogoImage
-        if DialogLogo then
-            DialogLogoImage = Instance.new("ImageLabel")
-            DialogLogoImage.Size = UDim2.new(0, 50, 0, 50)
-            DialogLogoImage.Position = UDim2.new(0.5, -25, 0, 20)
-            DialogLogoImage.BackgroundTransparency = 1
-            DialogLogoImage.Image = "rbxassetid://" .. tostring(DialogLogo)
-            DialogLogoImage.ZIndex = 11
-            DialogLogoImage.Parent = DialogFrame
+            yPos = yPos + 45
         end
         
-        local DialogTitleLabel = Instance.new("TextLabel")
-        DialogTitleLabel.Size = UDim2.new(1, -40, 0, 25)
-        DialogTitleLabel.Position = UDim2.new(0, 20, 0, DialogLogoImage and 80 or 20)
-        DialogTitleLabel.BackgroundTransparency = 1
-        DialogTitleLabel.Text = DialogTitle
-        DialogTitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-        DialogTitleLabel.TextSize = 18
-        DialogTitleLabel.Font = Enum.Font.GothamBold
-        DialogTitleLabel.ZIndex = 11
-        DialogTitleLabel.Parent = DialogFrame
-        
-        local DialogDescLabel = Instance.new("TextLabel")
-        DialogDescLabel.Size = UDim2.new(1, -40, 0, 40)
-        DialogDescLabel.Position = UDim2.new(0, 20, 0, DialogTitleLabel.Position.Y.Offset + 30)
-        DialogDescLabel.BackgroundTransparency = 1
-        DialogDescLabel.Text = DialogDesc
-        DialogDescLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-        DialogDescLabel.TextSize = 14
-        DialogDescLabel.Font = Enum.Font.Gotham
-        DialogDescLabel.TextWrapped = true
-        DialogDescLabel.ZIndex = 11
-        DialogDescLabel.Parent = DialogFrame
-        
-        local yOffset = DialogDescLabel.Position.Y.Offset + 50
-        
-        for i, option in ipairs(Options) do
-            local OptionButton = Instance.new("TextButton")
-            OptionButton.Size = UDim2.new(1, -40, 0, 35)
-            OptionButton.Position = UDim2.new(0, 20, 0, yOffset)
-            OptionButton.BackgroundColor3 = Color3.fromRGB(50, 150, 250)
-            OptionButton.BorderSizePixel = 0
-            OptionButton.Text = option.Title or "Option " .. i
-            OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-            OptionButton.TextSize = 14
-            OptionButton.Font = Enum.Font.GothamBold
-            OptionButton.ZIndex = 11
-            OptionButton.Parent = DialogFrame
-            
-            local OptionCorner = Instance.new("UICorner")
-            OptionCorner.CornerRadius = UDim.new(0, 6)
-            OptionCorner.Parent = OptionButton
-            
-            OptionButton.MouseButton1Click:Connect(function()
-                if option.Callback then
-                    option.Callback()
-                end
-                DialogFrame.Visible = false
-            end)
-            
-            yOffset = yOffset + 45
-        end
-        
-        local DialogFunctions = {}
-        
-        function DialogFunctions:Show()
-            DialogFrame.Visible = true
-        end
-        
-        function DialogFunctions:Hide()
-            DialogFrame.Visible = false
-        end
-        
-        function DialogFunctions:Destroy()
-            DialogFrame:Destroy()
-        end
-        
-        return DialogFunctions
+        return {
+            Show = function() D.Visible = true end,
+            Hide = function() D.Visible = false end,
+            Destroy = function() D:Destroy() end
+        }
     end
     
-    return WindowFunctions
+    function WF:Notify(NInfo)
+        NInfo = NInfo or {}
+        local opts = NInfo.Options or {}
+        
+        local N = Instance.new("Frame")
+        N.Size = UDim2.new(0, 320, 0, 200 + (#opts * 40))
+        N.Position = UDim2.new(0.5, -160, 0.5, -(100 + (#opts * 20)))
+        N.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+        N.BorderSizePixel = 0
+        N.ZIndex = 10
+        N.Parent = ScreenGui
+        Instance.new("UICorner", N).CornerRadius = UDim.new(0, 8)
+        
+        local yPos = 20
+        
+        if NInfo.Logo then
+            local NLogo = Instance.new("ImageLabel")
+            NLogo.Size = UDim2.new(0, 50, 0, 50)
+            NLogo.Position = UDim2.new(0.5, -25, 0, 20)
+            NLogo.BackgroundTransparency = 1
+            NLogo.Image = "rbxassetid://" .. tostring(NInfo.Logo)
+            NLogo.ZIndex = 11
+            NLogo.Parent = N
+            yPos = 80
+        end
+        
+        local NTitle = Instance.new("TextLabel")
+        NTitle.Size = UDim2.new(1, -40, 0, 25)
+        NTitle.Position = UDim2.new(0, 20, 0, yPos)
+        NTitle.BackgroundTransparency = 1
+        NTitle.Text = NInfo.Title or "Notification"
+        NTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+        NTitle.TextSize = 18
+        NTitle.Font = Enum.Font.GothamBold
+        NTitle.ZIndex = 11
+        NTitle.Parent = N
+        
+        local NDesc = Instance.new("TextLabel")
+        NDesc.Size = UDim2.new(1, -40, 0, 40)
+        NDesc.Position = UDim2.new(0, 20, 0, yPos + 30)
+        NDesc.BackgroundTransparency = 1
+        NDesc.Text = NInfo.Desc or ""
+        NDesc.TextColor3 = Color3.fromRGB(200, 200, 200)
+        NDesc.TextSize = 14
+        NDesc.Font = Enum.Font.Gotham
+        NDesc.TextWrapped = true
+        NDesc.ZIndex = 11
+        NDesc.Parent = N
+        
+        yPos = yPos + 80
+        
+        for i, opt in ipairs(opts) do
+            local OBtn = Instance.new("TextButton")
+            OBtn.Size = UDim2.new(1, -40, 0, 35)
+            OBtn.Position = UDim2.new(0, 20, 0, yPos)
+            OBtn.BackgroundColor3 = Color3.fromRGB(50, 150, 250)
+            OBtn.BorderSizePixel = 0
+            OBtn.Text = opt.Title or "Option " .. i
+            OBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+            OBtn.TextSize = 14
+            OBtn.Font = Enum.Font.GothamBold
+            OBtn.ZIndex = 11
+            OBtn.Parent = N
+            Instance.new("UICorner", OBtn).CornerRadius = UDim.new(0, 6)
+            
+            OBtn.MouseButton1Click:Connect(function()
+                if opt.Callback then
+                    pcall(opt.Callback)
+                end
+                N:Destroy()
+            end)
+            
+            yPos = yPos + 45
+        end
+    end
+    
+    return WF
 end
 
 function Lib:Demo()
-    local Window = Lib:Window({
+    local Win = Lib:Window({
         Title = "Hello bro!",
         Logo = 84950591783336,
         Key = true,
@@ -504,7 +438,7 @@ function Lib:Demo()
         }
     })
 
-    local Dialog = Window:Dialog({
+    local Dlg = Win:Dialog({
         Title = "Dialog",
         Desc = "Hello men",
         Logo = 84950591783336,
@@ -523,9 +457,9 @@ function Lib:Demo()
             }
         }
     })
-    Dialog:Show()
+    Dlg:Show()
     
-    Window:Notify({
+    Win:Notify({
         Title = "Hello",
         Desc = game.Players.LocalPlayer.Name .. "!",
         Logo = 84950591783336,
