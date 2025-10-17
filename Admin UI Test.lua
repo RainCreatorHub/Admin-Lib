@@ -519,7 +519,7 @@ function Lib:Demo()
 
     Window:Notify({
       Title = "Hello",
-      Desc = PlayerName .. "!",
+      Desc = "Bro!",
       Logo = 84950591783336,
       Options = {
         {
