@@ -3,9 +3,112 @@ local CoreGui = game:GetService("CoreGui")
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 
+-- Função de demonstração
+function UI:Demo()
+    warn("🚀 Iniciando Demonstração da UI Library...")
+    
+    local DemoWindow = self:Window({
+        Title = "Demonstração - UI Library",
+        Size = {500, 400},
+        Theme = "Dark"
+    })
+
+    -- Aba de Demonstração
+    local DemoTab = DemoWindow:Tab({Name = "Demonstração"})
+    local ConfigTab = DemoWindow:Tab({Name = "Configurações"})
+
+    -- Seção de introdução
+    DemoTab:Section({Name = "Bem-vindo à UI Library!"})
+    
+    DemoTab:Label({Name = "Esta é uma demonstração dos elementos disponíveis"})
+    DemoTab:Label({Name = "Totalmente compatível com dispositivos móveis"})
+
+    -- Seção de elementos interativos
+    DemoTab:Section({Name = "Elementos Interativos"})
+
+    local ClickCount = 0
+    DemoTab:Button({
+        Name = "Botão de Exemplo",
+        Callback = function()
+            ClickCount = ClickCount + 1
+            warn("✅ Botão pressionado! Cliques: " .. ClickCount)
+        end
+    })
+
+    local MyToggle = DemoTab:Toggle({
+        Name = "Toggle Exemplo",
+        Default = false,
+        Callback = function(value)
+            if value then
+                warn("🔛 Toggle ATIVADO")
+            else
+                warn("🔴 Toggle DESATIVADO")
+            end
+        end
+    })
+
+    local MySlider = DemoTab:Slider({
+        Name = "Slider Exemplo",
+        Min = 0,
+        Max = 100,
+        Default = 50,
+        Callback = function(value)
+            warn("🎚️ Valor do Slider: " .. value)
+        end
+    })
+
+    -- Seção de controles
+    DemoTab:Section({Name = "Controles"})
+
+    DemoTab:Button({
+        Name = "Ativar Toggle Programaticamente",
+        Callback = function()
+            MyToggle:Set(true)
+            warn("📝 Toggle ativado via código")
+        end
+    })
+
+    DemoTab:Button({
+        Name = "Mudar Slider para 75",
+        Callback = function()
+            MySlider:Set(75)
+            warn("📊 Slider ajustado para 75")
+        end
+    })
+
+    -- Aba de Configurações
+    ConfigTab:Section({Name = "Aparência"})
+
+    ConfigTab:Button({
+        Name = "Mudar para Tema Escuro",
+        Callback = function()
+            DemoWindow:SetTheme("Dark")
+            warn("🌙 Tema alterado para Escuro")
+        end
+    })
+
+    ConfigTab:Button({
+        Name = "Mudar para Tema Claro", 
+        Callback = function()
+            DemoWindow:SetTheme("Light")
+            warn("☀️ Tema alterado para Claro")
+        end
+    })
+
+    ConfigTab:Section({Name = "Informações"})
+
+    ConfigTab:Label({Name = "UI Library v1.0"})
+    ConfigTab:Label({Name = "Por: Seu Nome"})
+    ConfigTab:Label({Name = "Otimizado para Mobile"})
+
+    warn("✅ Demonstração carregada com sucesso!")
+    return DemoWindow
+end
+
 function UI:Window(Info)
     local Info = Info or {}
-    warn(Info.Title or "UI Loaded...")
+    local windowTitle = Info.Title or "UI Library"
+    warn("🎮 Iniciando UI: " .. windowTitle)
 
     local Wf = {}
     local Tabs = {}
@@ -77,7 +180,7 @@ function UI:Window(Info)
     TitleLabel.Size = UDim2.new(1, -40, 1, 0)
     TitleLabel.Position = UDim2.new(0, 10, 0, 0)
     TitleLabel.BackgroundTransparency = 1
-    TitleLabel.Text = Info.Title or "UI Library"
+    TitleLabel.Text = windowTitle
     TitleLabel.TextColor3 = CurrentTheme.Text
     TitleLabel.TextSize = 14
     TitleLabel.Font = Enum.Font.GothamSemibold
@@ -181,11 +284,17 @@ function UI:Window(Info)
     -- Função para alternar visibilidade
     function Wf:Toggle()
         MainFrame.Visible = not MainFrame.Visible
+        if MainFrame.Visible then
+            warn("👁️ UI visível: " .. windowTitle)
+        else
+            warn("👻 UI oculta: " .. windowTitle)
+        end
     end
     
     -- Função para destruir a UI
     function Wf:Destroy()
         ScreenGui:Destroy()
+        warn("🗑️ UI destruída: " .. windowTitle)
     end
 
     -- Função para mudar tema
@@ -202,14 +311,33 @@ function UI:Window(Info)
             -- Atualizar abas e elementos
             for _, tab in pairs(Tabs) do
                 if tab.Button then
-                    tab.Button.BackgroundColor3 = CurrentTheme.Secondary
+                    if CurrentTab == tab then
+                        tab.Button.BackgroundColor3 = CurrentTheme.Accent
+                    else
+                        tab.Button.BackgroundColor3 = CurrentTheme.Secondary
+                    end
                     tab.Button.TextColor3 = CurrentTheme.Text
                 end
                 if tab.Content then
                     tab.Content.ScrollBarImageColor3 = CurrentTheme.Accent
                 end
             end
+            
+            warn("🎨 Tema alterado para: " .. newTheme)
+        else
+            warn("⚠️ Tema não encontrado: " .. tostring(newTheme))
         end
+    end
+
+    -- Função para obter informações da janela
+    function Wf:GetInfo()
+        return {
+            Title = windowTitle,
+            Theme = Theme,
+            Size = Size,
+            TabCount = #Tabs,
+            Visible = MainFrame.Visible
+        }
     end
     
     -- Função para criar aba
@@ -279,7 +407,10 @@ function UI:Window(Info)
         
         -- Selecionar aba
         local function SelectTab()
-            if Tab.Locked then return end
+            if Tab.Locked then 
+                warn("🔒 Aba bloqueada: " .. Tab.Name)
+                return 
+            end
             
             -- Esconder todos os conteúdos
             for _, otherTab in pairs(Tabs) do
@@ -295,6 +426,8 @@ function UI:Window(Info)
             Tab.Content.Visible = true
             Tab.Button.BackgroundColor3 = CurrentTheme.Accent
             CurrentTab = Tab
+            
+            warn("📁 Aba selecionada: " .. Tab.Name)
         end
         
         TabButton.MouseButton1Click:Connect(SelectTab)
@@ -623,7 +756,8 @@ function UI:Window(Info)
     CloseButton.MouseButton1Click:Connect(function()
         Wf:Toggle()
     end)
-    
+
+    warn("✅ UI criada com sucesso: " .. windowTitle)
     return Wf
 end
 
