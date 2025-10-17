@@ -173,6 +173,7 @@ function Lib:Window(Info)
         KeySystem.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
         KeySystem.BorderSizePixel = 0
         KeySystem.Parent = ScreenGui
+        KeySystem.ZIndex = 10
         
         local KeyCorner = Instance.new("UICorner")
         KeyCorner.CornerRadius = UDim.new(0, 8)
@@ -516,6 +517,26 @@ function Lib:Demo()
         }
     })
     Dialog:Show()
+    
+    Window:Notify({
+        Title = "Hello",
+        Desc = game.Players.LocalPlayer.Name .. "!",
+        Logo = 84950591783336,
+        Options = {
+            {
+                Title = "Hello 1",
+                Callback = function()
+                    print("Ola 1!")
+                end
+            },
+            {
+                Title = "Hello 2",
+                Callback = function()
+                    print("Ola 2!")
+                end
+            }
+        }
+    })
 end
 
 return Lib
