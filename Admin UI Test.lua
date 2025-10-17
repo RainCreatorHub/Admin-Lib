@@ -186,6 +186,7 @@ function Lib:Window(Info)
             KeyLogo.Position = UDim2.new(0.5, -30, 0, 20)
             KeyLogo.BackgroundTransparency = 1
             KeyLogo.Image = "rbxassetid://" .. tostring(Info.KeyS.Logo)
+            KeyLogo.ZIndex = 11
             KeyLogo.Parent = KeySystem
         end
         
@@ -197,6 +198,7 @@ function Lib:Window(Info)
         KeyTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
         KeyTitle.TextSize = 18
         KeyTitle.Font = Enum.Font.GothamBold
+        KeyTitle.ZIndex = 11
         KeyTitle.Parent = KeySystem
         
         local KeySubTitle = Instance.new("TextLabel")
@@ -207,6 +209,7 @@ function Lib:Window(Info)
         KeySubTitle.TextColor3 = Color3.fromRGB(200, 200, 200)
         KeySubTitle.TextSize = 14
         KeySubTitle.Font = Enum.Font.Gotham
+        KeySubTitle.ZIndex = 11
         KeySubTitle.Parent = KeySystem
         
         local KeyDesc = Instance.new("TextLabel")
@@ -217,6 +220,7 @@ function Lib:Window(Info)
         KeyDesc.TextColor3 = Color3.fromRGB(150, 150, 150)
         KeyDesc.TextSize = 12
         KeyDesc.Font = Enum.Font.Gotham
+        KeyDesc.ZIndex = 11
         KeyDesc.Parent = KeySystem
         
         local KeyInput = Instance.new("TextBox")
@@ -230,6 +234,7 @@ function Lib:Window(Info)
         KeyInput.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
         KeyInput.TextSize = 14
         KeyInput.Font = Enum.Font.Gotham
+        KeyInput.ZIndex = 11
         KeyInput.Parent = KeySystem
         
         local KeyInputCorner = Instance.new("UICorner")
@@ -245,6 +250,7 @@ function Lib:Window(Info)
         SubmitButton.TextColor3 = Color3.fromRGB(255, 255, 255)
         SubmitButton.TextSize = 14
         SubmitButton.Font = Enum.Font.GothamBold
+        SubmitButton.ZIndex = 11
         SubmitButton.Parent = KeySystem
         
         local SubmitCorner = Instance.new("UICorner")
@@ -260,6 +266,7 @@ function Lib:Window(Info)
         GetKeyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
         GetKeyButton.TextSize = 14
         GetKeyButton.Font = Enum.Font.GothamBold
+        GetKeyButton.ZIndex = 11
         GetKeyButton.Parent = KeySystem
         
         local GetKeyCorner = Instance.new("UICorner")
