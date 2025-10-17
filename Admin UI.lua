@@ -95,4 +95,10 @@ function Lib:Window(Info)
     return Window
 end
 
+function Lib:Demo()
+ local Window = Lib:Window({
+   Title = "Hello bro!"
+ })
+end
+
 return Lib
