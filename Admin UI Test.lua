@@ -516,26 +516,6 @@ function Lib:Demo()
         }
     })
     Dialog:Show()
-
-    Window:Notify({
-      Title = "Hello",
-      Desc = "Bro!",
-      Logo = 84950591783336,
-      Options = {
-        {
-         Title = "Hello 1",
-         Callback = function()
-          print("Ola 1!")
-         end
-        },
-        {
-         Title = "Hello 2",
-         Callback = function()
-           print("Ola 2!")
-         end
-        }
-      }
-   })
 end
 
 return Lib
