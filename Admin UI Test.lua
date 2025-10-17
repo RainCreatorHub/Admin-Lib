@@ -54,7 +54,7 @@ function Lib:Window(Info)
     
     local TitleLabel = Instance.new("TextLabel")
     TitleLabel.Name = "Title"
-    TitleLabel.Size = UDim2.new(1, -20, 1, 0)
+    TitleLabel.Size = UDim2.new(1, -80, 1, 0)
     TitleLabel.Position = UDim2.new(0, Info.Logo and 35 or 10, 0, 0)
     TitleLabel.BackgroundTransparency = 1
     TitleLabel.Text = Title
@@ -63,6 +63,68 @@ function Lib:Window(Info)
     TitleLabel.Font = Enum.Font.GothamBold
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     TitleLabel.Parent = TitleBar
+    
+    local MinimizeButton = Instance.new("TextButton")
+    MinimizeButton.Name = "MinimizeButton"
+    MinimizeButton.Size = UDim2.new(0, 25, 0, 25)
+    MinimizeButton.Position = UDim2.new(1, -55, 0.5, -12.5)
+    MinimizeButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    MinimizeButton.BorderSizePixel = 0
+    MinimizeButton.Text = "–"
+    MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    MinimizeButton.TextSize = 16
+    MinimizeButton.Font = Enum.Font.GothamBold
+    MinimizeButton.Parent = TitleBar
+    
+    local MinimizeCorner = Instance.new("UICorner")
+    MinimizeCorner.CornerRadius = UDim.new(0, 4)
+    MinimizeCorner.Parent = MinimizeButton
+    
+    local CloseButton = Instance.new("TextButton")
+    CloseButton.Name = "CloseButton"
+    CloseButton.Size = UDim2.new(0, 25, 0, 25)
+    CloseButton.Position = UDim2.new(1, -25, 0.5, -12.5)
+    CloseButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+    CloseButton.BorderSizePixel = 0
+    CloseButton.Text = "X"
+    CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    CloseButton.TextSize = 14
+    CloseButton.Font = Enum.Font.GothamBold
+    CloseButton.Parent = TitleBar
+    
+    local CloseCorner = Instance.new("UICorner")
+    CloseCorner.CornerRadius = UDim.new(0, 4)
+    CloseCorner.Parent = CloseButton
+    
+    local minimized = false
+    local originalSize = Size
+    
+    CloseButton.MouseButton1Click:Connect(function()
+        ScreenGui:Destroy()
+    end)
+    
+    MinimizeButton.MouseButton1Click:Connect(function()
+        minimized = not minimized
+        if minimized then
+            Window:TweenSize(
+                UDim2.new(originalSize.X.Scale, originalSize.X.Offset, 0, 35),
+                Enum.EasingDirection.Out,
+                Enum.EasingStyle.Quad,
+                0.3,
+                true
+            )
+            MinimizeButton.Text = "+"
+        else
+            Window:TweenSize(
+                originalSize,
+                Enum.EasingDirection.Out,
+                Enum.EasingStyle.Quad,
+                0.3,
+                true
+            )
+            MinimizeButton.Text = "–"
+        end
+    end)
     
     local dragging = false
     local dragInput, dragStart, startPos
@@ -230,7 +292,193 @@ function Lib:Window(Info)
         end)
     end
     
-    return Window
+    local WindowFunctions = {}
+    
+    function WindowFunctions:Notify(NotifyInfo)
+        local NotifyInfo = NotifyInfo or {}
+        local NotifyTitle = NotifyInfo.Title or "Notification"
+        local NotifyDesc = NotifyInfo.Desc or ""
+        local NotifyLogo = NotifyInfo.Logo
+        local Options = NotifyInfo.Options or {}
+        
+        local NotifyFrame = Instance.new("Frame")
+        NotifyFrame.Name = "Notify"
+        NotifyFrame.Size = UDim2.new(0, 320, 0, 200 + (#Options * 40))
+        NotifyFrame.Position = UDim2.new(0.5, -160, 0.5, -(100 + (#Options * 20)))
+        NotifyFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+        NotifyFrame.BorderSizePixel = 0
+        NotifyFrame.Visible = true
+        NotifyFrame.ZIndex = 10
+        NotifyFrame.Parent = ScreenGui
+        
+        local NotifyCorner = Instance.new("UICorner")
+        NotifyCorner.CornerRadius = UDim.new(0, 8)
+        NotifyCorner.Parent = NotifyFrame
+        
+        local NotifyLogoImage
+        if NotifyLogo then
+            NotifyLogoImage = Instance.new("ImageLabel")
+            NotifyLogoImage.Size = UDim2.new(0, 50, 0, 50)
+            NotifyLogoImage.Position = UDim2.new(0.5, -25, 0, 20)
+            NotifyLogoImage.BackgroundTransparency = 1
+            NotifyLogoImage.Image = "rbxassetid://" .. tostring(NotifyLogo)
+            NotifyLogoImage.ZIndex = 11
+            NotifyLogoImage.Parent = NotifyFrame
+        end
+        
+        local NotifyTitleLabel = Instance.new("TextLabel")
+        NotifyTitleLabel.Size = UDim2.new(1, -40, 0, 25)
+        NotifyTitleLabel.Position = UDim2.new(0, 20, 0, NotifyLogoImage and 80 or 20)
+        NotifyTitleLabel.BackgroundTransparency = 1
+        NotifyTitleLabel.Text = NotifyTitle
+        NotifyTitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        NotifyTitleLabel.TextSize = 18
+        NotifyTitleLabel.Font = Enum.Font.GothamBold
+        NotifyTitleLabel.ZIndex = 11
+        NotifyTitleLabel.Parent = NotifyFrame
+        
+        local NotifyDescLabel = Instance.new("TextLabel")
+        NotifyDescLabel.Size = UDim2.new(1, -40, 0, 40)
+        NotifyDescLabel.Position = UDim2.new(0, 20, 0, NotifyTitleLabel.Position.Y.Offset + 30)
+        NotifyDescLabel.BackgroundTransparency = 1
+        NotifyDescLabel.Text = NotifyDesc
+        NotifyDescLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+        NotifyDescLabel.TextSize = 14
+        NotifyDescLabel.Font = Enum.Font.Gotham
+        NotifyDescLabel.TextWrapped = true
+        NotifyDescLabel.ZIndex = 11
+        NotifyDescLabel.Parent = NotifyFrame
+        
+        local yOffset = NotifyDescLabel.Position.Y.Offset + 50
+        
+        for i, option in ipairs(Options) do
+            local OptionButton = Instance.new("TextButton")
+            OptionButton.Size = UDim2.new(1, -40, 0, 35)
+            OptionButton.Position = UDim2.new(0, 20, 0, yOffset)
+            OptionButton.BackgroundColor3 = Color3.fromRGB(50, 150, 250)
+            OptionButton.BorderSizePixel = 0
+            OptionButton.Text = option.Title or "Option " .. i
+            OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+            OptionButton.TextSize = 14
+            OptionButton.Font = Enum.Font.GothamBold
+            OptionButton.ZIndex = 11
+            OptionButton.Parent = NotifyFrame
+            
+            local OptionCorner = Instance.new("UICorner")
+            OptionCorner.CornerRadius = UDim.new(0, 6)
+            OptionCorner.Parent = OptionButton
+            
+            OptionButton.MouseButton1Click:Connect(function()
+                if option.Callback then
+                    option.Callback()
+                end
+                NotifyFrame:Destroy()
+            end)
+            
+            yOffset = yOffset + 45
+        end
+    end
+        local DialogInfo = DialogInfo or {}
+        local DialogTitle = DialogInfo.Title or "Dialog"
+        local DialogDesc = DialogInfo.Desc or ""
+        local DialogLogo = DialogInfo.Logo
+        local Options = DialogInfo.Options or {}
+        
+        local DialogFrame = Instance.new("Frame")
+        DialogFrame.Name = "Dialog"
+        DialogFrame.Size = UDim2.new(0, 320, 0, 200 + (#Options * 40))
+        DialogFrame.Position = UDim2.new(0.5, -160, 0.5, -(100 + (#Options * 20)))
+        DialogFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+        DialogFrame.BorderSizePixel = 0
+        DialogFrame.Visible = false
+        DialogFrame.ZIndex = 10
+        DialogFrame.Parent = ScreenGui
+        
+        local DialogCorner = Instance.new("UICorner")
+        DialogCorner.CornerRadius = UDim.new(0, 8)
+        DialogCorner.Parent = DialogFrame
+        
+        local DialogLogoImage
+        if DialogLogo then
+            DialogLogoImage = Instance.new("ImageLabel")
+            DialogLogoImage.Size = UDim2.new(0, 50, 0, 50)
+            DialogLogoImage.Position = UDim2.new(0.5, -25, 0, 20)
+            DialogLogoImage.BackgroundTransparency = 1
+            DialogLogoImage.Image = "rbxassetid://" .. tostring(DialogLogo)
+            DialogLogoImage.ZIndex = 11
+            DialogLogoImage.Parent = DialogFrame
+        end
+        
+        local DialogTitleLabel = Instance.new("TextLabel")
+        DialogTitleLabel.Size = UDim2.new(1, -40, 0, 25)
+        DialogTitleLabel.Position = UDim2.new(0, 20, 0, DialogLogoImage and 80 or 20)
+        DialogTitleLabel.BackgroundTransparency = 1
+        DialogTitleLabel.Text = DialogTitle
+        DialogTitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        DialogTitleLabel.TextSize = 18
+        DialogTitleLabel.Font = Enum.Font.GothamBold
+        DialogTitleLabel.ZIndex = 11
+        DialogTitleLabel.Parent = DialogFrame
+        
+        local DialogDescLabel = Instance.new("TextLabel")
+        DialogDescLabel.Size = UDim2.new(1, -40, 0, 40)
+        DialogDescLabel.Position = UDim2.new(0, 20, 0, DialogTitleLabel.Position.Y.Offset + 30)
+        DialogDescLabel.BackgroundTransparency = 1
+        DialogDescLabel.Text = DialogDesc
+        DialogDescLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+        DialogDescLabel.TextSize = 14
+        DialogDescLabel.Font = Enum.Font.Gotham
+        DialogDescLabel.TextWrapped = true
+        DialogDescLabel.ZIndex = 11
+        DialogDescLabel.Parent = DialogFrame
+        
+        local yOffset = DialogDescLabel.Position.Y.Offset + 50
+        
+        for i, option in ipairs(Options) do
+            local OptionButton = Instance.new("TextButton")
+            OptionButton.Size = UDim2.new(1, -40, 0, 35)
+            OptionButton.Position = UDim2.new(0, 20, 0, yOffset)
+            OptionButton.BackgroundColor3 = Color3.fromRGB(50, 150, 250)
+            OptionButton.BorderSizePixel = 0
+            OptionButton.Text = option.Title or "Option " .. i
+            OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+            OptionButton.TextSize = 14
+            OptionButton.Font = Enum.Font.GothamBold
+            OptionButton.ZIndex = 11
+            OptionButton.Parent = DialogFrame
+            
+            local OptionCorner = Instance.new("UICorner")
+            OptionCorner.CornerRadius = UDim.new(0, 6)
+            OptionCorner.Parent = OptionButton
+            
+            OptionButton.MouseButton1Click:Connect(function()
+                if option.Callback then
+                    option.Callback()
+                end
+                DialogFrame.Visible = false
+            end)
+            
+            yOffset = yOffset + 45
+        end
+        
+        local DialogFunctions = {}
+        
+        function DialogFunctions:Show()
+            DialogFrame.Visible = true
+        end
+        
+        function DialogFunctions:Hide()
+            DialogFrame.Visible = false
+        end
+        
+        function DialogFunctions:Destroy()
+            DialogFrame:Destroy()
+        end
+        
+        return DialogFunctions
+    end
+    
+    return WindowFunctions
 end
 
 function Lib:Demo()
@@ -247,6 +495,47 @@ function Lib:Demo()
             Desc = "Keys: '1234' '5678'"
         }
     })
+
+    local Dialog = Window:Dialog({
+        Title = "Dialog",
+        Desc = "Hello men",
+        Logo = 84950591783336,
+        Options = {
+            {
+                Title = "Hello 1",
+                Callback = function()
+                    print("Ola 1!")
+                end
+            },
+            {
+                Title = "Hello 2",
+                Callback = function()
+                    print("Ola 2!")
+                end
+            }
+        }
+    })
+    Dialog:Show()
+
+    Window:Notify({
+      Title = "Hello",
+      Desc = PlayerName .. "!",
+      Logo = 84950591783336,
+      Options = {
+        {
+         Title = "Hello 1",
+         Callback = function()
+          print("Ola 1!")
+         end
+        },
+        {
+         Title = "Hello 2",
+         Callback = function()
+           print("Ola 2!")
+         end
+        }
+      }
+   })
 end
 
 return Lib
