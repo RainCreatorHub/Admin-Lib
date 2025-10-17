@@ -237,14 +237,14 @@ function Lib:Demo()
     local Window = Lib:Window({
         Title = "Hello bro!",
         Logo = 84950591783336,
-        Key = false,
+        Key = true,
         KeyS = {
             Key = {"1234", "5678"},
             Url = "https://google.com",
             Logo = 84950591783336,
             Title = "Key",
             SubTitle = "System",
-            Desc = "By rain"
+            Desc = "Keys: '1234' '5678'"
         }
     })
 end
